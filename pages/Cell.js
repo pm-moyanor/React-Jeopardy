@@ -1,52 +1,46 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import _ from 'lodash'
+import _, { forEach } from "lodash";
+import Board from "./Board";
 
 export default function Cell() {
   const [question, setQuestion] = useState("");
   const BASE_API_URL = "http://jservice.io/api/";
-  const NUM_CATEGORIES = 6;
-  const NUM_CLUES_PER_CAT = 5;
+
   let categoryIDs = [];
-  let ranCat = Math.floor(Math.random() * 6);
-  let arr = [];
+  let randomCategories = "";
   let clues = [];
+  let randomClues = useEffect(() => {
+    getAllCategories();
+  }, []);
 
-  useEffect(() => {
-    async function getAllCategories() {
-      await axios.get(`${BASE_API_URL}categories?count=100`).then((res) => {
-        res.data.forEach((category) => categoryIDs.push(category.id));
-        return _.sampleSize(categoryIDs, NUM_CATEGORIES)
-      });
-    //console.log(_.sampleSize(categoryIDs, NUM_CATEGORIES))
+  async function getAllCategories() {
+    await axios.get(`${BASE_API_URL}categories?count=100`).then((res) => {
+      let arr = res.data;
+      categoryIDs = arr.map((e) => e.id);
+      randomCategories = _.sampleSize(categoryIDs, 6);
+      return randomCategories;
+    });
+  }
 
-      async function getCluesRandomC() {
-        const res = await axios.get(
-          `${BASE_API_URL}clues?category=${categoryIDs[ranCat]}`
-        );
-        clues = res.data;
+  async function getRandomClues(id) {
+    let t = await axios.get(`${BASE_API_URL}clues?category=${id}`);
+    let clues = t.data;
+    let randomClues = _.sampleSize(clues, 5);
+    console.log(randomClues);
+    return randomClues;
+  }
 
-        let randomClues = _.sampleSize(clues, NUM_CLUES_PER_CAT)
-        //return  _.sampleSize(clues, NUM_CLUES_PER_CAT)
-        let pistas = randomClues.map(c => ({
-            question: c.question,
-            answer: c.answer,
-            showing: null,
-          }));
-          return { title: clues.title, pistas };
-       
-      }
-      getCluesRandomC();
-     
-    }
-
-  
-    console.log(getAllCategories())
-  },[]);
+  async function getClues() {
+    let cluesArr = await Promise.all(
+      randomCategories.map((category) => {
+        getRandomClues(category);
+      })
+    );
+  }
 
   function handleClick() {
-    setQuestion();
-    console.log(question);
+    getClues();
   }
 
   return (
@@ -55,3 +49,20 @@ export default function Cell() {
     </div>
   );
 }
+
+// needed:
+
+// fill board with question,answers
+// for each category (in column)
+// take randomClues and iterate to fill out every cell in Board column.
+
+// like >
+
+// foreach randomClues element, update state to key question or answer onClick
+
+
+// por hacer
+// repasar useEffect
+// promises, como await chained requests 
+// extract objects
+
