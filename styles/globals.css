@@ -3,9 +3,53 @@ body{
   background-color: black;
 }
 
-.cell-box{
-  border: solid white 1px;
+.board{
+
+  display: flex;
+  flex-direction:row;
+
+ 
+}
+
+/* .table-board{
   color: white;
+  border: solid rgb(237, 119, 119) 1px;
+
+  display: flex;
+  flex-direction:row;
+
+
+} */
+
+.header{
+display: flex;
+flex-direction: row;
+
+}
+.category-box{
+  border: solid rgb(89, 96, 239) 1px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  color: white;
+ 
+}
+.cells-box{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell-box{
+  border: solid rgb(123, 246, 198) 1px;
+  width: 80px;
+  height: 80px;
+  color: white;
+  text-align: center;
+  margin: 0px;
   
+ 
+ 
 
 }
