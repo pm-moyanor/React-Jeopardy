@@ -51,7 +51,7 @@ export default function Board() {
               <div className="cells-box">
                 <h5 className="cell-box">{category.title}</h5>
                 {clues.slice(index * 5, (index + 1) * 5).map((clue) => (
-                  <Cell value={clue.answer} />
+                  <Cell answer={clue.answer} question={clue.question}/>
                 ))}
               </div>
             </div>

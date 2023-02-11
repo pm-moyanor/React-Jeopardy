@@ -3,10 +3,26 @@ import axios from "axios";
 
 import Board from "./Board";
 
-export default function Cell({ value }) {
-    return <div className="cell-box">{value}</div>;
+export default function Cell({ answer, question }) {
+  const [isClue, setIsClue] = useState("?");
+
+  function handleClick() {
+    setIsClue(question);
+    if(isClue === question){
+        setIsClue(answer)
+    }   else if(isClue === answer){
+        setIsClue(null)
+    }   
+
+    console.log('clicked')
   }
-  
+
+  return (
+    <div className="cell-box" onClick={handleClick}>
+      {isClue }
+    </div>
+  );
+}
 
 // needed:
 
