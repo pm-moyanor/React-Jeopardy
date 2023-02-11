@@ -11,7 +11,7 @@ body{
  
 }
 
-/* .table-board{
+.table-board{
   color: white;
   border: solid rgb(237, 119, 119) 1px;
 
@@ -19,13 +19,9 @@ body{
   flex-direction:row;
 
 
-} */
-
-.header{
-display: flex;
-flex-direction: row;
-
 }
+
+
 .category-box{
   border: solid rgb(89, 96, 239) 1px;
   padding-top: 10px;
@@ -39,6 +35,7 @@ flex-direction: row;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: white;
 }
 
 .cell-box{

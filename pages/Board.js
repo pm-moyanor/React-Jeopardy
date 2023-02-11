@@ -17,56 +17,61 @@ export default function Board() {
   }, []);
 
   async function getAllCategories() {
-    await axios.get(`${BASE_API_URL}categories?count=100`).then((res) => {
-      categoryIDs = res.data.map((e) => ({ id: e.id, title: e.title }));
+    try {
+      const res = await axios.get(`${BASE_API_URL}categories?count=100`);
+      categoryIDs = res.data.map(e => ({ id: e.id, title: e.title }));
       randomCategories = _.sampleSize(categoryIDs, 6);
-    });
-    // console.log(randomCategories)
+    } catch (error) {
+      console.error(error);
+     
+    }
     setCategories(randomCategories);
     getClues(randomCategories);
   }
-
+  
   async function getClues(categories) {
-    //console.log(categories);
-    let cluesData = await Promise.all(
-      categories.map(async (category) => {
-        await axios
-          .get(`${BASE_API_URL}clues?category=${category.id}`)
-          .then((res) => {
-            //console.log([_.sampleSize(res.data, 5)]);
-            randomClues = randomClues.concat(_.sampleSize(res.data, 5));
-          });
-      })
-    );
-
-    
-    console.log(categories)
-    console.log(randomClues);
-    setClues(randomClues);
+    try {
+      let lodashClues = [];
+      await Promise.all(
+        categories.map(async category => {
+          const res = await axios.get(`${BASE_API_URL}clues?category=${category.id}`);
+          lodashClues = [...lodashClues, ..._.sampleSize(res.data, 5)];
+        })
+      );
+      setClues(lodashClues);
+    } catch (error) {
+      console.error(error);
+     
+    }
   }
+  
 
-  const handleStartGame = () => {
-    setCategories("");
-    setClues("");
-  };
+    const handleStartGame = () => {
+    console.log('clicked')
+    };
 
   return (
     <>
       <div className="board">
-        <div className="header">
-          {categories.map((category, index) => {
-            return (
-              <div className="container">
-                <div className="cells-box">
-                  <h5 className="cell-box">{category.title}</h5>
-                  {clues.filter((clue)=>clue.category_id === category.id).map((clue) => (
-                    <Cell clue={clue}answer={clue.answer} catId={category.id}question={clue.question} />
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        {categories.map((category, index) => {
+          return (
+            <div className="cells-box">
+              <h5 key={category.title} className="cell-box">
+                {category.title}
+              </h5>
+              {clues
+                .filter((clue) => clue.category_id === category.id)
+                .map((clue) => (
+                  <Cell
+                    id={clue.id}
+                    answer={clue.answer}
+                    catId={category.id}
+                    question={clue.question}
+                  />
+                ))}
+            </div>
+          );
+        })}
       </div>
       <button onClick={handleStartGame}>restart game</button>
     </>
@@ -74,6 +79,6 @@ export default function Board() {
 }
 
 ///to do:
-// onClick change state from ? to clue.question to clue.answer xxxxxxxxxx
-///// ???? fix scrambled data!!!!!!!!!!!!!!!!!!
-// set button onClick for restarting game >>>>> using the array in useEffect? rerender when clicked
+// restart game button and clean statement for useEffect
+// review useEffect, apis, return chained functions
+// add css
