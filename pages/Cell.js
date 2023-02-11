@@ -1,28 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import _, { forEach } from "lodash";
+
 import Board from "./Board";
 
-export default function Cell() {
-
-
-//   function handleClick() {
-//     getClues();
-//   }
-//   function fillBoard(clues) {
-//     console.log(clues);
-//   }
-
-  //console.log(clues[0])
-  //   return (
-
-return(
-<td className="cell-box">?</td>
-)
-
-
-    
-}
+export default function Cell({ value }) {
+    return <div className="cell-box">{value}</div>;
+  }
+  
 
 // needed:
 

@@ -43,7 +43,7 @@ flex-direction: row;
 
 .cell-box{
   border: solid rgb(123, 246, 198) 1px;
-  width: 80px;
+  width: 100px;
   height: 80px;
   color: white;
   text-align: center;
