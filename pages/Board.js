@@ -3,6 +3,7 @@ import axios from "axios";
 import Cell from "./Cell";
 import { useEffect, useState } from "react";
 
+
 export default function Board() {
   const [clues, setClues] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -19,39 +20,45 @@ export default function Board() {
   async function getAllCategories() {
     try {
       const res = await axios.get(`${BASE_API_URL}categories?count=100`);
-      categoryIDs = res.data.map(e => ({ id: e.id, title: e.title }));
+      categoryIDs = res.data.map((e) => ({ id: e.id, title: e.title }));
       randomCategories = _.sampleSize(categoryIDs, 6);
     } catch (error) {
-      console.error(error);
-     
+      console.log(error);
+      
     }
     setCategories(randomCategories);
     getClues(randomCategories);
   }
-  
+
   async function getClues(categories) {
     try {
       let lodashClues = [];
       await Promise.all(
-        categories.map(async category => {
-          const res = await axios.get(`${BASE_API_URL}clues?category=${category.id}`);
+        categories.map(async (category) => {
+          const res = await axios.get(
+            `${BASE_API_URL}clues?category=${category.id}`
+          );
           lodashClues = [...lodashClues, ..._.sampleSize(res.data, 5)];
         })
       );
       setClues(lodashClues);
     } catch (error) {
       console.error(error);
-     
+      
     }
   }
-  
 
-    const handleStartGame = () => {
-    console.log('clicked')
-    };
+  const handleStartGame = () => {
+
+    getAllCategories()
+ 
+  };
 
   return (
     <>
+      <div >
+        <h2>Jeopardy</h2>
+      </div>
       <div className="board">
         {categories.map((category, index) => {
           return (
@@ -73,7 +80,7 @@ export default function Board() {
           );
         })}
       </div>
-      <button onClick={handleStartGame}>restart game</button>
+      <button className="restart-btn" onClick={handleStartGame}>restart</button>
     </>
   );
 }
@@ -81,4 +88,5 @@ export default function Board() {
 ///to do:
 // restart game button and clean statement for useEffect
 // review useEffect, apis, return chained functions
-// add css
+// add css, what happens after click answer
+// how to choose winner
