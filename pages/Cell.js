@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Board from "./Board";
 
-export default function Cell({ id, catId, answer, question }) {
-  const [isClue, setIsClue] = useState("?");
-
+export default function Cell({ id, answer, question,trimTags }) {
+  const [isClue, setIsClue] = useState("?"); // check if clicked to clue or answer
 
   function handleClick() {
-    console.log(id);
     setIsClue(question);
+    if (isClue === null) {
+      return;
+    }
+
     if (isClue === question) {
       setIsClue(answer);
     } else if (isClue === answer) {
@@ -17,9 +19,8 @@ export default function Cell({ id, catId, answer, question }) {
   }
 
   return (
-    <div key={id} id={id} className="cell-box" onClick={handleClick}>
+    <div id={id} className="cell-box" onClick={handleClick}>
       {isClue}
     </div>
   );
 }
-
