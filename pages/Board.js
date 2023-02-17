@@ -101,7 +101,7 @@ export default function Board() {
 ///to do:
 // some strings have <i> tags. need to filter them
 // order of rendering syncro?
-// restart game button and clean statement for useEffect
+// restart game button and clean statement for useEffect?
 // fix CSS
 // review useEffect, apis, return chained functions
 // add css, what happens after click answer

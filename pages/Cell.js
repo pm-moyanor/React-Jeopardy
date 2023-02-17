@@ -5,7 +5,7 @@ import Board from "./Board";
 export default function Cell({ id, answer, question,trimTags }) {
   const [isClue, setIsClue] = useState("?"); // check if clicked to clue or answer
 
-  function handleClick() {
+  function handleClick() { // error no frena la function 
     setIsClue(question);
     if (isClue === null) {
       return;
@@ -17,7 +17,7 @@ export default function Cell({ id, answer, question,trimTags }) {
       setIsClue(null);
     }
   }
-
+s
   return (
     <div id={id} className="cell-box" onClick={handleClick}>
       {isClue}
