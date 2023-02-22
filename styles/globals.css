@@ -1,8 +1,7 @@
 body {
-  background-color: rgb(251, 251, 251);
+  background-color: rgb(117, 114, 114);
   display: flex;
   justify-content: center;
-
 }
 
 h2 {
@@ -44,8 +43,6 @@ h2 {
   color: white;
 }
 
-
-
 .cell-box {
   border: solid rgb(255, 255, 255) 1px;
   font-size: 14px;
@@ -58,7 +55,7 @@ h2 {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
-.category-cell{
+.category-cell {
   height: 50px;
 }
 
@@ -72,7 +69,4 @@ h2 {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-  
- 
 }
-

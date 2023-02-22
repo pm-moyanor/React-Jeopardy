@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import Board from "./Board";
+import { useState } from "react";
 
-export default function Cell({ id, answer, question,trimTags }) {
+export default function Cell({ id, answer, question, trimTags }) {
   const [isClue, setIsClue] = useState("?"); // check if clicked to clue or answer
 
   function handleClick() {

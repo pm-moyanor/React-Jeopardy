@@ -20,9 +20,7 @@ export default function Board() {
     try {
       const res = await axios.get(`${BASE_API_URL}categories?count=100`); //get 100 categories from API
       const data = res.data.filter((cat) => cat.clues_count > 5); //check if they have enough clues
-
       randomCategories = _.sampleSize(data, 6); //get 6 random categories from the 100
-
       randomCategoryData = randomCategories.map((cat) => ({
         id: cat.id,
         title: cat.title,
@@ -31,15 +29,15 @@ export default function Board() {
       console.log(error);
     }
     setCategories(randomCategories);
-
-    getClues(randomCategoryData); // go get the clues for each category
+    console.log(randomCategoryData);
+    getClues(randomCategoryData); // go get the clues for each category [{id, title}, {}, ...{}]
   }
 
   async function getClues(categories) {
     try {
       //get clues for every category, using the id provided
       await Promise.all(
-        categories.map(async (category) => {
+        categories.map(async (category, idx, arr) => {
           const res = await axios.get(
             `${BASE_API_URL}clues?category=${category.id}`
           );
@@ -47,7 +45,6 @@ export default function Board() {
           randomClues = [...randomClues, ...cluesSample]; // store clues in the array
         })
       );
-
       setClues(randomClues);
     } catch (error) {
       console.error(error);
@@ -56,12 +53,14 @@ export default function Board() {
 
   const handleStartGame = () => {
     // reset the API fetch
+    console.log("Starting a newwwwwwwwwwwwwwwwwwwwwwwww game");
     getAllCategories();
   };
 
-  function trimTags(string){  // modifies italic tags in some data strings 
+  function trimTags(string) {
+    // modifies italic tags in some data strings
     const regex = /<i>(.*?)<\/i>/g; // function on top or close to where is used??
-   return string.replace(regex, '')
+    return string.replace(regex, "");
   }
 
   return (
@@ -79,7 +78,6 @@ export default function Board() {
               {clues
                 .filter((clue) => clue.category_id === category.id) // take the clues that belong to the category
                 .map((clue) => (
-
                   <Cell
                     id={clue.id}
                     answer={clue.answer}
