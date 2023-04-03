@@ -17,8 +17,7 @@ export default function Cell({ id, answer, question,trimTags }) {
       setIsClue(null);
     }
   }
-s
-  return (
+return (
     <div id={id} className="cell-box" onClick={handleClick}>
       {isClue}
     </div>

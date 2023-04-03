@@ -4,6 +4,10 @@ import Cell from "./Cell"
 
 export default function App(){
     return (
-        <Board />
+        <>
+        <h1>Jeopardy</h1>
+         <Board />
+         </>
+       
     )
 }

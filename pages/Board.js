@@ -1,3 +1,5 @@
+
+
 import _ from "lodash";
 import axios from "axios";
 import Cell from "./Cell";
@@ -8,60 +10,56 @@ export default function Board() {
   const [categories, setCategories] = useState([]);
   const BASE_API_URL = "http://jservice.io/api/";
 
-  let randomCategoryData = [];
-  let randomCategories = [];
-  let randomClues = [];
-
   useEffect(() => {
-    getAllCategories(); //get data when mounted
+    if (clues.length === 0 && categories.length === 0) {
+      getAllData(); //get data when mounted
+    }
   }, []);
 
-  async function getAllCategories() {
+  async function getAllData() {
     try {
       const res = await axios.get(`${BASE_API_URL}categories?count=100`); //get 100 categories from API
       const data = res.data.filter((cat) => cat.clues_count > 5); //check if they have enough clues
 
-      randomCategories = _.sampleSize(data, 6); //get 6 random categories from the 100
+      let randomCategories = _.sampleSize(data, 6); //get 6 random categories from the 100
 
-      randomCategoryData = randomCategories.map((cat) => ({
+      let randomCategoryData = randomCategories.map((cat) => ({
         id: cat.id,
         title: cat.title,
       })); // iterate throw the 6 and extract its name and title
+
+      // get clues for every category, using the id provided
+      let promises = randomCategoryData.map(async (category) => {
+        const res = await axios.get(
+          `${BASE_API_URL}clues?category=${category.id}`
+        );
+        let cluesSample = _.sampleSize(res.data, 5); //extract 5 random clues
+        return cluesSample.map((clue) => ({
+          id: clue.id,
+          answer: clue.answer,
+          question: clue.question,
+          categoryId: clue.category_id,
+        }));
+      });
+
+      let randomClues = await Promise.all(promises);
+
+      setCategories(randomCategoryData);
+      setClues(_.flatten(randomClues));
     } catch (error) {
       console.log(error);
-    }
-    setCategories(randomCategories);
-
-    getClues(randomCategoryData); // go get the clues for each category
-  }
-
-  async function getClues(categories) {
-    try {
-      //get clues for every category, using the id provided
-      await Promise.all(
-        categories.map(async (category) => {
-          const res = await axios.get(
-            `${BASE_API_URL}clues?category=${category.id}`
-          );
-          let cluesSample = _.sampleSize(res.data, 5); //extract 5 random clues
-          randomClues = [...randomClues, ...cluesSample]; // store clues in the array
-        })
-      );
-
-      setClues(randomClues);
-    } catch (error) {
-      console.error(error);
     }
   }
 
   const handleStartGame = () => {
     // reset the API fetch
-    getAllCategories();
+    getAllData();
   };
 
-  function trimTags(string){  // modifies italic tags in some data strings 
-    const regex = /<i>(.*?)<\/i>/g; // function on top or close to where is used??
-   return string.replace(regex, '')
+  function trimTags(string) {
+    // modifies italic tags in some data strings
+    const regex = /<i>(.*?)<\/i>/g; 
+    return string.replace(regex, "");
   }
 
   return (
@@ -69,40 +67,38 @@ export default function Board() {
       <div>
         <h2>Jeopardy</h2>
       </div>
-      <div className="board">
-        {categories.map((category, index) => {
-          // trimTags(category.title) // check for all data? or on every iteration ?
-          return (
-            <div className="cells-box">
-              <h5 className="cell-box category-cell">{category.title}</h5>
+      {categories.length > 0 && clues.length > 0 ? (
+        <>
+          <div className="board">
+            {categories.map((category, index) => {
+              return (
+                <div className="cells-box" key={category.id}>
+                  <h5 className="cell-box category-cell">{category.title}</h5>
 
-              {clues
-                .filter((clue) => clue.category_id === category.id) // take the clues that belong to the category
-                .map((clue) => (
+                  {clues
+                    .filter((clue) => clue.categoryId === category.id) // take the clues that belong to the category
+                    .map((clue) => (
+                      <Cell
+                        key={clue.id}
+                        id={clue.id}
+                        answer={clue.answer}
+                        question={clue.question}
+                        trimTags={trimTags}
+                      />
+                    ))}
+                </div>
+              );
+            })}
+          </div>
 
-                  <Cell
-                    id={clue.id}
-                    answer={clue.answer}
-                    question={clue.question}
-                    trimTags={trimTags}
-                  />
-                ))}
-            </div>
-          );
-        })}
-      </div>
-      <button className="restart-btn" onClick={handleStartGame}>
-        restart
-      </button>
+          <button className="restart-btn" onClick={handleStartGame}>
+            restart
+          </button>
+        </>
+      ) : (
+        <h3>loading...</h3>
+      )}
     </>
   );
 }
 
-///to do:
-// some strings have <i> tags. need to filter them
-// order of rendering syncro?
-// restart game button and clean statement for useEffect?
-// fix CSS
-// review useEffect, apis, return chained functions
-// add css, what happens after click answer
-// how to choose winner
