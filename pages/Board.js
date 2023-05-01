@@ -1,5 +1,3 @@
-
-
 import _ from "lodash";
 import axios from "axios";
 import Cell from "./Cell";
@@ -58,7 +56,7 @@ export default function Board() {
 
   function trimTags(string) {
     // modifies italic tags in some data strings
-    const regex = /<i>(.*?)<\/i>/g; 
+    const regex = /<i>(.*?)<\/i>/g;
     return string.replace(regex, "");
   }
 
@@ -101,4 +99,3 @@ export default function Board() {
     </>
   );
 }
-
