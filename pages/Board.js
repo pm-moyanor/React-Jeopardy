@@ -1,6 +1,9 @@
 import _ from "lodash";
 import axios from "axios";
 import Cell from "./Cell";
+import styles from "../styles/Board.module.css";
+import Image from "next/image";
+import downIcon from "../public/down-filled-triangular-arrow.png";
 import { useEffect, useState } from "react";
 
 export default function Board() {
@@ -61,17 +64,22 @@ export default function Board() {
   }
 
   return (
-    <>
-      <div>
-        <h2>Jeopardy</h2>
-      </div>
+    <div className={styles.mainContainer}>
       {categories.length > 0 && clues.length > 0 ? (
         <>
-          <div className="board">
+          <div className={styles.board}>
             {categories.map((category, index) => {
               return (
                 <div className="cells-box" key={category.id}>
-                  <h5 className="cell-box category-cell">{category.title}</h5>
+                  <div className={styles.tops}>
+                    {" "}
+                    <h5 className="cell-box category-cell">{category.title}</h5>
+                    <Image
+                      src={downIcon}
+                      style={{ width: "16px", height: "22px" }}
+                      alt="arrow down"
+                    />
+                  </div>
 
                   {clues
                     .filter((clue) => clue.categoryId === category.id) // take the clues that belong to the category
@@ -96,6 +104,6 @@ export default function Board() {
       ) : (
         <h3>loading...</h3>
       )}
-    </>
+    </div>
   );
 }

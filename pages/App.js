@@ -1,13 +1,14 @@
-import Board from "./Board"
-import Cell from "./Cell"
+import Board from "./Board";
 
+import Header from "./Header";
+import Footer from "./Footer";
 
-export default function App(){
-    return (
-        <>
-        <h1>Jeopardy</h1>
-         <Board />
-         </>
-       
-    )
+export default function App() {
+  return (
+    <>
+      <Header />
+      <Board />
+      <Footer />
+    </>
+  );
 }

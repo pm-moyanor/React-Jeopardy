@@ -1,0 +1,20 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.board {
+  display: flex;
+  margin: 80px;
+}
+
+.tops{
+   height: 200px;
+   background-color: rgb(163, 208, 79);
+   display: flex;
+   justify-content: center;
+   flex-direction: column;
+   align-items: center;
+}
