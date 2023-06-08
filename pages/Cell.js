@@ -8,13 +8,14 @@ export default function Cell({ id, answer, question, trimTags }) {
       src={questionMark}
       style={{ width: "22px", height: "36px" }}
       alt="question mark"
-    ></Image>
+    />
   );
 
-  let randomColor = `rgb(${Math.floor(Math.random() * 256)} ${Math.floor(
+  const randomColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(
     Math.random() * 256
-  )} ${Math.floor(Math.random() * 256)})`;
-  // check if clicked to clue or answer
+  )}, ${Math.floor(Math.random() * 256)})`;
+
+  // Check if clicked to clue or answer
   function handleClick() {
     setIsClue(question);
     if (isClue === null) {
@@ -28,19 +29,48 @@ export default function Cell({ id, answer, question, trimTags }) {
       setIsClue(null);
     }
   }
+
+  // Determine the className based on the isClue value
+  const cellClassName = isClue === null ? "cell-box blocked" : "cell-box";
+
+  // Determine the style based on the isClue value
+  const cellStyle = {
+    backgroundColor: isClue === null ? "black" : randomColor,
+    position: "relative", // Required to position the overlay
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+
+  // Create a translucent white overlay for question and answer states
+  const overlayStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.3)", // Adjust the alpha value as needed for readability
+    zIndex: 1, // Ensure the overlay is above the background
+  };
+
+  // Determine the zIndex for the question and answer content
+  const contentZIndex = isClue === question || isClue === answer ? 2 : 3;
+
+  // Style for the content (question and answer)
+  const contentStyle = {
+    position: "relative", // Required to respect overlay's position
+    zIndex: contentZIndex,
+  };
+
   return (
     <div
       id={id}
-      className={`cell-box ${isClue === null ? "blocked" : ""}`}
+      className={cellClassName}
       onClick={handleClick}
-      style={{
-        backgroundColor: randomColor,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+      style={cellStyle}
     >
-      {isClue}
+      <div style={contentStyle}>{isClue}</div>
+      {isClue === question || isClue === answer && <div style={overlayStyle}></div>}
     </div>
   );
 }
