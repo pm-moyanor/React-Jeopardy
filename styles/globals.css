@@ -1,12 +1,19 @@
-body {
+html, body {
+  margin: 0;
+  padding: 0;
+}
+body{
   display: flex;
   justify-content: center;
   width: 100%;
-  margin: 0;
+
   align-items: center;
   background-color: rgba(0, 0, 0, 0.934);
 }
 
+#__next{
+  width: 100%;
+}
 .cells-box {
   display: flex;
   
