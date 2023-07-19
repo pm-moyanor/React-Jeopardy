@@ -9,6 +9,7 @@ body {
 
 .cells-box {
   display: flex;
+  
   flex-direction: column;
   align-items: center;
 }
@@ -40,16 +41,19 @@ body {
   background-color: rgb(100, 100, 100);
 }
 
-.restart-btn {
-  border: 0.5px black solid;
-  background-color: rgb(34, 34, 34);
+
+
+
+.restart-btn{
+  
+  background-color: rgb(84, 84, 255);
+  padding: 30px;
+  border: none;
   color: white;
-  padding: 16px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  margin-bottom: 200px;
+  font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 22px;
+  
+
 }
