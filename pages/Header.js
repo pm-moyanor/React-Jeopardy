@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       {/* <h1 style={{ fontFamily: 'Konkhmer Sleokchher, sans-serif' }}>JEOPARDY!</h1> */}
-      <Image src="../Jeopardy!_logo.svg" width= '400' height='200'  ></Image>
+      <Image src="../Jeopardy!_logo.svg" width= '400' height='200' alt="jeopardy title" ></Image>
     </header>
   );
 };

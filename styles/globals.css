@@ -14,6 +14,9 @@ body{
 #__next{
   width: 100%;
 }
+
+
+
 .cells-box {
   display: flex;
   
@@ -65,3 +68,6 @@ body{
   
 
 }
+
+
+

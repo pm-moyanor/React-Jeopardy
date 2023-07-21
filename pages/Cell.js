@@ -35,7 +35,7 @@ export default function Cell({ id, answer, question, trimTags }) {
 
   // Determine the style based on the isClue value
   const cellStyle = {
-    backgroundColor: isClue === null ? "black" : randomColor,
+    backgroundColor: isClue === null ? "gray" : randomColor,
     position: "relative", // Required to position the overlay
     display: "flex",
     justifyContent: "center",
